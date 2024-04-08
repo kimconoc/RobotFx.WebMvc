@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RobotFx.DoMain.Models
+namespace RobotFx.DoMain.Models.BaseModel
 {
     public class StatusResponse
     {

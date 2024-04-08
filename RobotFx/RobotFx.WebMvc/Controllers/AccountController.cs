@@ -1,12 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RobotFx.DoMain.FileLog;
+using RobotFx.DoMain.Models;
+using RobotFx.WebMvc.MemCached.Interface;
+using RobotFx.WebMvc.Models;
 using System.Reflection;
 
 namespace RobotFx.WebMvc.Controllers
 {
     public class AccountController : BaseController
     {
-       
+        public AccountController(IMemCached memCached) : base(memCached)
+        {
+        }
+
         public IActionResult Login()
         {
             return View();
@@ -17,7 +24,19 @@ namespace RobotFx.WebMvc.Controllers
         {
             try
             {
-                return Json(Success_Request("oke"));
+                var loginViewModel = JsonConvert.DeserializeObject<LoginViewModel>(loginViewModelJson);
+                if (loginViewModel.LoginName.ToLower() == "ducpv" && loginViewModel.Password.ToLower() == "123")
+                {
+                    User userData = new User();
+                    userData.Account = loginViewModel.LoginName;
+                    _memCached.ExecuteSaveUserPassword(loginViewModel);
+                    _memCached.ExecuteSaveData(userData);
+                    return Json(Success_Request(userData));
+                }
+                else
+                {
+                    return Json(Server_Error("Tài khoản đăng nhập không đúng!"));
+                }
             }
             catch (Exception ex)
             {

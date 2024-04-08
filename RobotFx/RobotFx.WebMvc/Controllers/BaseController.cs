@@ -1,13 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using RobotFx.DoMain.Models;
+using RobotFx.DoMain.Models.BaseModel;
+using RobotFx.WebMvc.MemCached.Interface;
 using System.Net;
 
 namespace RobotFx.WebMvc.Controllers
 {
     public class BaseController : Controller, IAsyncActionFilter
     {
-
+        protected readonly IMemCached _memCached;
+        public BaseController(IMemCached memCached)
+        {
+            _memCached = memCached;
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _memCached.Dispose();
+                //((IDisposable)provider).Dispose();
+            }
+            base.Dispose(disposing);
+        }
         protected DataResponse<TRequest> Success_Request<TRequest>(TRequest data)
         {
             return new DataResponse<TRequest>()
