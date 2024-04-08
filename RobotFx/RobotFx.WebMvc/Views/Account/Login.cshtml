@@ -1,7 +1,9 @@
 ﻿@using RobotFx.DoMain.Constant;
+@using RobotFx.WebMvc.MemCached.Interface
+@inject IMemCached memCached
 @{
     Layout = null;
-    var loginViewModel = new LoginViewModel();
+    var loginViewModel = memCached.GetCurrentUserPassword();
     if (loginViewModel == null)
     {
         loginViewModel = new LoginViewModel();
@@ -145,7 +147,21 @@
                 success: function (data) {
                     hideOverlay();
                     if (data.success && data.data) {
-                        window.location = "/Main/Menu"
+                        if (0 <= data.data && data.data <= 3) {
+                            awesomeAlert({
+                                header: true,
+                                type: 'warning',
+                                title: 'Cảnh báo!',
+                                message: 'Tài khoản sắp hết hạn',
+                                //bgColor: '#2dd284',
+                                img: '/assets/images/icon/warning.svg',
+                                buttonOK: 'Oke!',
+                                closeStyle: 'circle'
+                            }).then(res => window.location = "/Main/Menu")
+                        }
+                        else {
+                            window.location = "/Main/Menu"
+                        }
                     }
                     else {
                         $('#alert_login').html(data.message);

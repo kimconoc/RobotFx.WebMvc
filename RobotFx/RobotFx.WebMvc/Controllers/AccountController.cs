@@ -29,9 +29,17 @@ namespace RobotFx.WebMvc.Controllers
                 {
                     User userData = new User();
                     userData.Account = loginViewModel.LoginName;
+                    userData.ExpireDate = DateTime.Now.AddDays(365);
+                    if (!loginViewModel.IsSaveCookies || userData.ExpireDate.Date < DateTime.Now.Date)
+                    {
+                        loginViewModel.IsSaveCookies = false;
+                        loginViewModel.Password = string.Empty;
+                        loginViewModel.Imei = string.Empty;
+                    }
                     _memCached.ExecuteSaveUserPassword(loginViewModel);
                     _memCached.ExecuteSaveData(userData);
-                    return Json(Success_Request(userData));
+                    int remainingDays = (userData.ExpireDate.Date - DateTime.Now.Date).Days;
+                    return Json(Success_Request(remainingDays));
                 }
                 else
                 {
