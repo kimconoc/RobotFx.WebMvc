@@ -34,6 +34,7 @@ builder.Services.AddDbContext<CommonDBContext>(options =>
 builder.Services.AddScoped<IMemCached, MemCached>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IRepository<User>, Repository<User>>();
+builder.Services.AddScoped<IRepository<AccountFx>, Repository<AccountFx>>();
 
 var app = builder.Build();
 

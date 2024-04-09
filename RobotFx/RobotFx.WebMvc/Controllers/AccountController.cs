@@ -12,12 +12,12 @@ using System.Reflection;
 namespace RobotFx.WebMvc.Controllers
 {
     public class AccountController : BaseController
-    {
-        protected readonly IUnitOfWork _unitOfWork;
-        protected readonly IRepository<User> _userRepositor;
-        public AccountController(IMemCached memCached, IUnitOfWork unitOfWork, IRepository<User> userRepository) : base(memCached)
+    {      
+        private readonly IRepository<User> _userRepositor;
+
+        public AccountController(IMemCached memCached, IUnitOfWork unitOfWork, IRepository<User> userRepository) 
+            : base(memCached, unitOfWork)
         {
-            _unitOfWork = unitOfWork;
             _userRepositor = userRepository;
         }
 

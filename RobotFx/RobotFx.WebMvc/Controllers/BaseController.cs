@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using RobotFx.DoMain.Models.BaseModel;
+using RobotFx.Repositories.EntityFamework.Interface;
 using RobotFx.WebMvc.MemCached.Interface;
 using System.Net;
 
@@ -9,15 +10,18 @@ namespace RobotFx.WebMvc.Controllers
     public class BaseController : Controller, IAsyncActionFilter
     {
         protected readonly IMemCached _memCached;
-        public BaseController(IMemCached memCached)
+        protected readonly IUnitOfWork _unitOfWork;
+        public BaseController(IMemCached memCached, IUnitOfWork unitOfWork)
         {
             _memCached = memCached;
+            _unitOfWork = unitOfWork;
         }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 _memCached.Dispose();
+                _unitOfWork.Dispose();
                 //((IDisposable)provider).Dispose();
             }
             base.Dispose(disposing);

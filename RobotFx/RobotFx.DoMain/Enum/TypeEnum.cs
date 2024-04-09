@@ -21,4 +21,20 @@ namespace RobotFx.DoMain.Enum
         UnknownDevice = 4,
 
     }
+    public enum EnterTypeEnum
+    {
+        [Description("Buy")]
+        Buy = 0,
+        [Description("Sell")]
+        Sell = 1,
+        [Description("Random")]
+        random = 2,
+    }
+    public enum IsOnlineTypeEnum
+    {
+        [Description("Off")]
+        Off = 0,
+        [Description("On")]
+        On = 1,
+    }
 }

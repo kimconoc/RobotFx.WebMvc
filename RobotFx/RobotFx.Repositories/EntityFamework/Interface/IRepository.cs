@@ -12,8 +12,8 @@ namespace RobotFx.Repositories.EntityFamework.Interface
         IQueryable<T> AsQueryable();
         IEnumerable<T> AsEnumerable();
         T GetById(int id);
-        void Insert(T entity);
-        void Update(T entity);
-        void Delete(T entity);
+        bool Insert(T entity);
+        bool Update(T entity);
+        bool Delete(T entity);
     }
 }

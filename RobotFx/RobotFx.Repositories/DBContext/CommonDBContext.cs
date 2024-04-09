@@ -14,5 +14,6 @@ namespace RobotFx.Repositories.DBContext
         }
 
         public DbSet<RobotFx.DoMain.Models.User> Users { get; set; }
+        public DbSet<RobotFx.DoMain.Models.AccountFx> AccountFxs { get; set; }
     }
 }

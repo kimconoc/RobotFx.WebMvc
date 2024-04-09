@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RobotFx.Repositories.EntityFamework
 {
@@ -35,19 +36,38 @@ namespace RobotFx.Repositories.EntityFamework
             return _dbSet.Find(id);
         }
 
-        public void Insert(T entity)
+        public bool Insert(T entity)
         {
+            bool isInsert = false;
             _dbSet.Add(entity);
+            var entry = _context.Entry(entity);
+            if (entry.State == EntityState.Added)
+                isInsert = true;
+
+            return isInsert;
         }
 
-        public void Update(T entity)
+        public bool Update(T entity)
         {
+            bool isUpdate = false;
             _context.Entry(entity).State = EntityState.Modified;
+            var entry = _context.Entry(entity);
+            if (entry.State == EntityState.Modified)
+                isUpdate = true;
+
+            return isUpdate;
         }
 
-        public void Delete(T entity)
+        public bool Delete(T entity)
         {
+            bool isDelete = false;
             _dbSet.Remove(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            var entry = _context.Entry(entity);
+            if (entry.State == EntityState.Deleted)
+                isDelete = true;
+
+            return isDelete;
         }
     }
 }

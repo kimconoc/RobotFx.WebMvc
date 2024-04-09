@@ -1,1 +1,267 @@
-﻿
+﻿@using RobotFx.DoMain.Constant
+@using RobotFx.DoMain.Models
+
+@model AccountFx
+@{
+    Layout = null;
+    var serializedModel = Newtonsoft.Json.JsonConvert.SerializeObject(Model);
+}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/css/executionAccountFx.css?v=@Default.VersionApp" rel="stylesheet" />
+    <script src="~/Scripts/jquery/jquery-3.3.1.js"></script>
+    <script src="~/js/constant.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link href="~/css/site.css?v=@Default.VersionApp" rel="stylesheet" />
+    @*master-plan*@
+    <script src="~/assets/helpers/master-plan/adr_common.js"></script>
+    <script src="~/assets/helpers/master-plan/iosOverlay.js"></script>
+    <link href="~/assets//helpers/master-plan/style.css" rel="stylesheet" />
+    @*cssscript*@
+    <script src="~/assets/helpers/awesome-alert-main/awesomealert.js"></script>
+    <link rel="stylesheet" href="~/assets/helpers/awesome-alert-main/style.css" />
+    @*Syncfusion*@
+    <link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-base/styles/material.css" rel="stylesheet">
+    <link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-inputs/styles/material.css" rel="stylesheet">
+    <link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-dropdowns/styles/material.css" rel="stylesheet">
+    <link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-buttons/styles/material.css" rel="stylesheet">
+    <script src="https://cdn.syncfusion.com/ej2/22.2.5/dist/ej2.min.js" type="text/javascript"></script>
+    <script src="https://cdn.syncfusion.com/ej2/syncfusion-helper.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+    <style>
+
+        input {
+            padding: 0px 0px 0px 5px;
+        }
+
+        .e-checkbox-wrapper .e-frame + .e-label, .e-css.e-checkbox-wrapper .e-frame + .e-label {
+            margin-left: 10px;
+            font-size: 15px;
+        }
+
+        .container-executePlayer {
+            padding-top: 50px;
+        }
+
+        .custom-div-row {
+            justify-content:center;
+        }
+
+    </style>
+</head>
+<body>
+    <header class="header-page">
+        <div class="title-page">
+            <div onclick="window.location.href='/Phonebook/ListPlayer';" class="title-page-goback">
+                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                Tài khoản
+            </div>
+            <button type="submit" form="executionAccountFxForm" class="title-page-btn">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+            </button>
+        </div>
+    </header>
+    <div class="container-executePlayer">
+        <div class="wrapper">
+            <form id="executionAccountFxForm" action="#">
+                <div style="display:none;" class="div-row-input-val">
+                    <div class="row row-input-val">
+                        <span>
+                            Id:
+                        </span>
+                        <input type="text" tabindex="1" id="id" value="@(Model.Id == 0 ? "0" : Model.Id)">
+                    </div>
+                </div>
+                <div class="div-row-input-val">
+                    <div class="row row-input-val">
+                        <span>
+                            Id tài khoản:
+                        </span>
+                        <input type="text" tabindex="1" id="idAccountFx" required value="@Model.IdAccountFx">
+                    </div>
+                    <div class="row row-input-val">
+                        <span>
+                            Tên:
+                        </span>
+                        <input type="text" tabindex="1" id="name" value="@Model.Name">
+                    </div>
+                </div>
+                <div class="div-row-input-val">
+                    <div class="row row-input-val">
+                        <span>
+                            Giá bắt đầu:
+                        </span>
+                        <input type="number" step="any" tabindex="1" id="startingPrice" required value="@Model.StartingPrice">
+                    </div>
+                </div>
+                <div class="div-row-input-val">
+                    <div class="row row-input-val">
+                        <span>
+                            Giãn cách giá 0.01 đến 0.05:
+                        </span>
+                        <input type="number" step="any" tabindex="1" id="priceSpacing1To5" required value="@Model.PriceSpacing1To5">
+                    </div>
+                </div>
+                <div class="div-row-input-val">
+                    <div class="row row-input-val">
+                        <span>
+                            Giãn cách giá 0.05 đến 0.013:
+                        </span>
+                        <input type="number" step="any" tabindex="1" id="priceSpacing5To13" required value="@Model.PriceSpacing5To13">
+                    </div>
+                </div>
+                <div class="div-row-input-val">
+                    <div class="row row-input-val">
+                        <span>
+                            <span>Cách chơi:</span>
+                        </span>
+                        <div class="div-row-radio-cach-trung">
+                            <input type="radio" id="enterType_buy">
+                            <input type="radio" id="enterType_sell">
+                            <input type="radio" id="enterType_random">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="custom-div-row div-row-input-val div-row-span-title">
+                        <span>**Trạng Thái**</span>
+                    </div>
+                    <div class="custom-div-row div-row-input-val div-row-input-val-radio">
+                        <input type="radio" id="is_offline">
+                        <input type="radio" id="is_online">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+
+            var model = @Html.Raw(serializedModel);
+            ej.base.enableRipple(true);
+
+            // Initialize RadioButton component.
+            if (model.IsOnline) {
+                var radiobutton = new ej.buttons.RadioButton({ label: 'Offline', name: 'onlineonoffline', value: '0', enableRtl: 'true' });
+                radiobutton.appendTo('#is_offline');
+                radiobutton = new ej.buttons.RadioButton({ label: 'Online', name: 'onlineonoffline', value: '1', enableRtl: 'true', checked: true });
+                radiobutton.appendTo('#is_online');
+            }
+            else {
+                var radiobutton = new ej.buttons.RadioButton({ label: 'Offline', name: 'onlineonoffline', value: '0', enableRtl: 'true', checked: true });
+                radiobutton.appendTo('#is_offline');
+                radiobutton = new ej.buttons.RadioButton({ label: 'Online', name: 'onlineonoffline', value: '1', enableRtl: 'true' });
+                radiobutton.appendTo('#is_online');
+            }
+
+            radiobutton = new ej.buttons.RadioButton({ label: 'Buy', name: 'enterType', value: '0', enableRtl: 'true' });
+            radiobutton.appendTo('enterType_buy');
+            radiobutton = new ej.buttons.RadioButton({ label: 'Sell', name: 'enterType', value: '1', enableRtl: 'true' });
+            radiobutton.appendTo('#enterType_sell');
+            radiobutton = new ej.buttons.RadioButton({ label: 'Random', name: 'enterType', value: '2', enableRtl: 'true', checked: true });
+            radiobutton.appendTo('#enterType_random');
+
+            radiobutton.appendTo('#cr_bCachTrungDaThang_nhieuCap');
+            // Render initialized CheckBox.
+            var checkbox = new ej.buttons.CheckBox({ label: 'Hiện đá xiên' });
+            checkbox.appendTo('#cr_bcheckbox_show_daxien');
+            checkbox.change = function (args) {
+                var element = document.getElementById("cr_show_bDaxien");
+                if (args.checked) {
+                    element.style.display = "block";
+                } else {
+                    element.style.display = "none";
+                }
+            };
+        });
+
+        // Bắt sự kiện submit của biểu mẫu create
+        document.getElementById("executionAccountFxForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Ngăn chặn biểu mẫu gửi đi mặc định
+
+            var selectedRadioonlineonoffline = document.querySelector('input[name="onlineonoffline"]:checked');
+            var selectedRadioenterType = document.querySelector('input[name="enterType"]:checked');
+
+            var accountFxModel = {
+                id: document.getElementById("id").value,
+                idAccountFx: document.getElementById("idAccountFx").value,
+                name: document.getElementById("name").value,
+                startingPrice: document.getElementById("startingPrice").value,
+                priceSpacing1To5: document.getElementById("priceSpacing1To5").value,
+                priceSpacing5To13: document.getElementById("priceSpacing5To13").value,
+                enterType: selectedRadioenterType.value,
+                isOnline: selectedRadioonlineonoffline.value,
+                isDeleted: false,
+            }
+            var accountFxModels = [accountFxModel];
+            accountFxModels.push();
+            ShowOverlay(true);
+            accountFxJsons = JSON.stringify(accountFxModels);
+            $.ajax({
+                type: "POST",
+                data:
+                {
+                    "accountFxJsons": accountFxJsons,
+                },
+                url: "@Url.Action("ExecuteAccountFx", "AccountFx")",
+                success: function (data) {
+                    if (data.success) {
+                        awesomeAlert({
+                            header: true,
+                            type: 'success',
+                            title: 'Thành công!',
+                            message: 'Thành công.',
+                            //bgColor: '#2dd284',
+                            img: '/assets/images/icon/success.svg',
+                            buttonOK: 'Xong!',
+                            closeStyle: 'circle'
+                        }).then(res => window.location = "/Phonebook/ListPlayer")
+                    }
+                    else {
+                        if (data.redirectTo) {
+                            // Chuyển hướng trình duyệt đến đường dẫn được chỉ định
+                            window.location.href = data.redirectTo;
+                        } else {
+                            var message = "Đã có lỗi xảy ra."
+                            if (!isNullOrEmpty(data.message)) {
+                                message = data.message;
+                            }
+                            awesomeAlert({
+                                header: true,
+                                type: 'error',
+                                title: 'Có lỗi!',
+                                message: message,
+                                //bgColor: '#2dd284',
+                                img: '/assets/images/icon/error.svg',
+                                buttonOK: 'Oke!',
+                                closeStyle: 'circle'
+                            }).then(res => false)
+                        }
+                    }
+                },
+                error: function (xhr, status, error) {
+                    awesomeAlert({
+                        header: true,
+                        type: 'error',
+                        title: 'Có lỗi!',
+                        message: 'Lỗi hệ thống',
+                        //bgColor: '#2dd284',
+                        img: '/assets/images/icon/error.svg',
+                        buttonOK: 'Oke!',
+                        closeStyle: 'circle'
+                    }).then(res => false)
+                },
+                complete: function () {
+                    hideOverlay();
+                }
+            })
+        });
+
+    </script>
+</body>
+</html>
