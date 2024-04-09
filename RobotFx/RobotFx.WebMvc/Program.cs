@@ -2,6 +2,13 @@
 using RobotFx.WebMvc.MemCached.Interface;
 using RobotFx.WebMvc.MemCached;
 using System.Reflection;
+using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using RobotFx.Repositories.DBContext;
+using RobotFx.Repositories.EntityFamework.Interface;
+using RobotFx.Repositories.EntityFamework;
+using RobotFx.DoMain.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +26,14 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+// Đăng ký DbContext với chuỗi kết nối
+var connectionString = builder.Configuration.GetConnectionString("DbSqlRobotFx");
+builder.Services.AddDbContext<CommonDBContext>(options =>
+    options.UseSqlServer(connectionString));
+
 builder.Services.AddScoped<IMemCached, MemCached>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IRepository<User>, Repository<User>>();
 
 var app = builder.Build();
 

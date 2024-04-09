@@ -2,16 +2,23 @@
 using Newtonsoft.Json;
 using RobotFx.DoMain.FileLog;
 using RobotFx.DoMain.Models;
+using RobotFx.Repositories.EntityFamework;
+using RobotFx.Repositories.EntityFamework.Interface;
 using RobotFx.WebMvc.MemCached.Interface;
 using RobotFx.WebMvc.Models;
+using System.Linq;
 using System.Reflection;
 
 namespace RobotFx.WebMvc.Controllers
 {
     public class AccountController : BaseController
     {
-        public AccountController(IMemCached memCached) : base(memCached)
+        protected readonly IUnitOfWork _unitOfWork;
+        protected readonly IRepository<User> _userRepositor;
+        public AccountController(IMemCached memCached, IUnitOfWork unitOfWork, IRepository<User> userRepository) : base(memCached)
         {
+            _unitOfWork = unitOfWork;
+            _userRepositor = userRepository;
         }
 
         public IActionResult Login()
@@ -25,20 +32,20 @@ namespace RobotFx.WebMvc.Controllers
             try
             {
                 var loginViewModel = JsonConvert.DeserializeObject<LoginViewModel>(loginViewModelJson);
-                if (loginViewModel.LoginName.ToLower() == "ducpv" && loginViewModel.Password.ToLower() == "123")
+                var users = _userRepositor.AsQueryable().
+                    Where(x => x.Account.ToLower() == loginViewModel.LoginName && x.Password == loginViewModel.Password.ToLower())
+                    .FirstOrDefault();
+                if (users != null)
                 {
-                    User userData = new User();
-                    userData.Account = loginViewModel.LoginName;
-                    userData.ExpireDate = DateTime.Now.AddDays(365);
-                    if (!loginViewModel.IsSaveCookies || userData.ExpireDate.Date < DateTime.Now.Date)
+                    if (!loginViewModel.IsSaveCookies || users.ExpireDate.Date < DateTime.Now.Date)
                     {
                         loginViewModel.IsSaveCookies = false;
                         loginViewModel.Password = string.Empty;
                         loginViewModel.Imei = string.Empty;
                     }
                     _memCached.ExecuteSaveUserPassword(loginViewModel);
-                    _memCached.ExecuteSaveData(userData);
-                    int remainingDays = (userData.ExpireDate.Date - DateTime.Now.Date).Days;
+                    _memCached.ExecuteSaveData(users);
+                    int remainingDays = (users.ExpireDate.Date - DateTime.Now.Date).Days;
                     return Json(Success_Request(remainingDays));
                 }
                 else
