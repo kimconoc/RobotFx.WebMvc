@@ -1,1 +1,125 @@
-﻿
+﻿@using RobotFx.DoMain.Enum
+@using RobotFx.DoMain.Extentions
+@using RobotFx.DoMain.Models
+@model List<AccountFx>;
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="~/css/listAccountFx.css" rel="stylesheet" />
+    <style>
+
+    </style>
+</head>
+<body>
+    <div class="container-listplayer">
+        <div class="info-page">
+            <strong>
+                Tài khoản
+            </strong>
+        </div>
+        @{
+            if (Model == null || Model.Count == 0)
+            {
+                <div class="box-no-data-found">
+                    <img src="~/images/empty-order/empty-order.png">
+                    <span>Không có tài khoản</span>
+                </div>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    string strEnterType = string.Empty;
+                    switch (item.EnterType)
+                    {
+                        case (int)EnterTypeEnum.Buy:
+                            strEnterType = EnterTypeEnum.Buy.GetDescription();
+                            break;
+                        case (int)EnterTypeEnum.Sell:
+                            strEnterType = EnterTypeEnum.Sell.GetDescription();
+                            break;
+                        default:
+                            strEnterType = EnterTypeEnum.random.GetDescription();
+                            break;
+                    }
+                    <div class="div-list-player">
+                        <div class="avatar">
+                            <i class="fa fa-user-circle"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div class="info-detail">
+                                <strong style="font-size:18px;">@strEnterType</strong>
+                                <span style="margin-top:5px;">@string.Format((item.IsOnline == 1 ? "(Online)" : "(Offline)"))</span>
+                            </div>
+                            <i id="@item.Id" onclick="deletePlayer(this)" class="icon-danger-delete fa fa-trash" aria-hidden="true"></i>
+                            <i onclick="window.location.href='/Phonebook/ExecutionPlayer?playerId=@item.Id&isCopy=true';" class="icon-danger-copy fa fa-clone" aria-hidden="true"></i>
+                            <i onclick="window.location.href='/Phonebook/ExecutionPlayer?playerId=@item.Id';" class="icon-danger-info fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <div style="margin-bottom:20px;" class="border-bottom-row"></div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+
+    </div>
+    <script>
+        function deletePlayer(dom) {
+            if (confirm("Bạn muốn xóa người chơi này?")) {
+                executeConfirm(dom.id);
+            }
+        }
+
+        function executeConfirm(playerId) {
+            ShowOverlay(true);
+            $.ajax({
+                type: "POST",
+                traditional: true,
+                data:
+                {
+                    "playerId": playerId,
+                },
+                url: "@Url.Action("ExecuteDeletePlayer", "Phonebook")",
+                success: function (data) {
+                    hideOverlay();
+                    if (data.success && data.data) {
+                        awesomeAlert({
+                            header: true,
+                            type: 'success',
+                            title: 'Thành công!',
+                            message: 'Xóa người chơi thành công.',
+                            //bgColor: '#2dd284',
+                            img: '/assets/images/icon/success.svg',
+                            buttonOK: 'Xong!',
+                            closeStyle: 'circle'
+                        }).then(res => window.location = "/Phonebook/ListPlayer")
+                    }
+                    else {
+                        if (data.redirectTo) {
+                            // Chuyển hướng trình duyệt đến đường dẫn được chỉ định
+                            window.location.href = data.redirectTo;
+                        } else {
+                            var message = "Đã có lỗi xảy ra."
+                            if (!isNullOrEmpty(data.message)) {
+                                message = data.message;
+                            }
+                            awesomeAlert({
+                                header: true,
+                                type: 'error',
+                                title: 'Có lỗi!',
+                                message: message,
+                                //bgColor: '#2dd284',
+                                img: '/assets/images/icon/error.svg',
+                                buttonOK: 'Oke!',
+                                closeStyle: 'circle'
+                            }).then(res => false)
+                        }
+                    }
+                },
+            })
+        }
+    </script>
+</body>
+</html>

@@ -22,7 +22,9 @@ namespace RobotFx.WebMvc.Controllers
 
         public IActionResult ListAccountFx()
         {
-            return View();
+            var userData = _memCached.GetCurrentUser();
+            var listAccountFx = _accountFxRepositor.AsQueryable().Where(x => x.UserId == userData.Id).ToList();
+            return View(listAccountFx);
         }
 
         public IActionResult ExecutionAccountFx(int? accountFxId)
