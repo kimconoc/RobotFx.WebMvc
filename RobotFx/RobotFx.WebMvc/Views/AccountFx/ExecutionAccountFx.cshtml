@@ -110,7 +110,7 @@
                 <div class="div-row-input-val">
                     <div class="row row-input-val">
                         <span>
-                            Giãn cách giá 0.05 đến 0.013:
+                            Giãn cách giá 0.05 đến 0.13:
                         </span>
                         <input type="number" step="any" tabindex="1" id="priceSpacing5To13" required value="@Model.PriceSpacing5To13">
                     </div>
@@ -160,7 +160,7 @@
             }
 
             radiobutton = new ej.buttons.RadioButton({ label: 'Buy', name: 'enterType', value: '0', enableRtl: 'true' });
-            radiobutton.appendTo('enterType_buy');
+            radiobutton.appendTo('#enterType_buy');
             radiobutton = new ej.buttons.RadioButton({ label: 'Sell', name: 'enterType', value: '1', enableRtl: 'true' });
             radiobutton.appendTo('#enterType_sell');
             radiobutton = new ej.buttons.RadioButton({ label: 'Random', name: 'enterType', value: '2', enableRtl: 'true', checked: true });
