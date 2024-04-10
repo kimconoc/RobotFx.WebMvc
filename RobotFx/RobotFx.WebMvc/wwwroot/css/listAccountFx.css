@@ -31,16 +31,6 @@
     position: absolute;
     font-size: 22px;
     top: 6px;
-    right: 115px;
-    cursor: pointer;
-}
-
-.icon-danger-copy {
-    color: blue;
-    position: absolute;
-    font-size: 20px;
-    margin-top: -1px;
-    top: 8px;
     right: 65px;
     cursor: pointer;
 }
@@ -53,4 +43,15 @@
     top: 6px;
     right: 10px;
     cursor: pointer;
+}
+
+.status-dot {
+    position: absolute;
+    top: 28px;
+    left: 25px;
+    width: 15px;
+    height: 15px;
+    background-color: green;
+    border-radius: 50%;
+    border: 2px solid #fff;
 }

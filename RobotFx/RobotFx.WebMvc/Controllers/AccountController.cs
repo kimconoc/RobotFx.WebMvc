@@ -33,7 +33,7 @@ namespace RobotFx.WebMvc.Controllers
             {
                 var loginViewModel = JsonConvert.DeserializeObject<LoginViewModel>(loginViewModelJson);
                 var users = _userRepositor.AsQueryable().
-                    Where(x => x.Account.ToLower() == loginViewModel.LoginName && x.Password == loginViewModel.Password.ToLower())
+                    Where(x => x.Account.ToLower() == loginViewModel.LoginName && x.Password == loginViewModel.Password.ToLower() && !x.IsDeleted)
                     .FirstOrDefault();
                 if (users != null)
                 {

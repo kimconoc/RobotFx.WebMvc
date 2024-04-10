@@ -23,7 +23,7 @@ namespace RobotFx.WebMvc.Controllers
         public IActionResult ListAccountFx()
         {
             var userData = _memCached.GetCurrentUser();
-            var listAccountFx = _accountFxRepositor.AsQueryable().Where(x => x.UserId == userData.Id).ToList();
+            var listAccountFx = _accountFxRepositor.AsQueryable().Where(x => x.UserId == userData.Id && !x.IsDeleted).ToList();
             return View(listAccountFx);
         }
 
@@ -52,12 +52,12 @@ namespace RobotFx.WebMvc.Controllers
                 if(accountFxs[0].Id == 0)
                 {
                     if(!_accountFxRepositor.Insert(accountFxs[0]))
-                        Json(Bad_Request());
+                        return Json(Bad_Request());
                 }
                 else
                 {
                     if (!_accountFxRepositor.Update(accountFxs[0]))
-                        Json(Bad_Request());
+                        return Json(Bad_Request());
                 }
 
                 _unitOfWork.Commit();
@@ -70,6 +70,28 @@ namespace RobotFx.WebMvc.Controllers
 
             return View(Server_Error());
 
+        }
+
+        [HttpPost]
+        public IActionResult ExecuteDeleteAccountFx(int accountFxId)
+        {
+            try
+            {
+                var userData = _memCached.GetCurrentUser();
+                var accountFx = _accountFxRepositor.AsQueryable().Where(x => x.UserId == userData.Id && x.Id == accountFxId).FirstOrDefault();
+
+                if (!_accountFxRepositor.SoftDelete(accountFx))
+                    return Json(Bad_Request());
+
+                _unitOfWork.Commit();
+                return Json(Success_Request());
+            }
+            catch(Exception ex)
+            {
+                FileHelper.GeneratorFileByDay(ex.ToString(), MethodBase.GetCurrentMethod().Name);
+            }
+           
+            return View(Server_Error());
         }
 
     }

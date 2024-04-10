@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RobotFx.DoMain.Models.BaseModel.Interface;
 using RobotFx.Repositories.DBContext;
 using RobotFx.Repositories.EntityFamework.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -50,7 +52,6 @@ namespace RobotFx.Repositories.EntityFamework
         public bool Update(T entity)
         {
             bool isUpdate = false;
-            _context.Entry(entity).State = EntityState.Modified;
             var entry = _context.Entry(entity);
             if (entry.State == EntityState.Modified)
                 isUpdate = true;
@@ -58,11 +59,20 @@ namespace RobotFx.Repositories.EntityFamework
             return isUpdate;
         }
 
+        public bool SoftDelete(T entity)
+        {
+            bool isSoftDelete = false;
+            ((IEntity<int>)entity).IsDeleted = true;
+            if(Update(entity))
+                isSoftDelete = true;
+
+            return isSoftDelete;
+        }
+
         public bool Delete(T entity)
         {
             bool isDelete = false;
             _dbSet.Remove(entity);
-            _context.Entry(entity).State = EntityState.Modified;
             var entry = _context.Entry(entity);
             if (entry.State == EntityState.Deleted)
                 isDelete = true;

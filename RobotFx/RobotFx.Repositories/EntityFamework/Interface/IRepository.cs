@@ -14,6 +14,7 @@ namespace RobotFx.Repositories.EntityFamework.Interface
         T GetById(int id);
         bool Insert(T entity);
         bool Update(T entity);
+        bool SoftDelete(T entity);
         bool Delete(T entity);
     }
 }
