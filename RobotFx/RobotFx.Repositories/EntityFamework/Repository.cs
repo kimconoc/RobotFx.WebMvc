@@ -52,6 +52,7 @@ namespace RobotFx.Repositories.EntityFamework
         public bool Update(T entity)
         {
             bool isUpdate = false;
+            _dbSet.Update(entity);
             var entry = _context.Entry(entity);
             if (entry.State == EntityState.Modified)
                 isUpdate = true;
