@@ -1,4 +1,5 @@
 ﻿@using RobotFx.DoMain.Constant
+@using RobotFx.DoMain.Enum
 @using RobotFx.DoMain.Models
 
 @model AccountFx
@@ -166,18 +167,28 @@
             radiobutton = new ej.buttons.RadioButton({ label: 'Random', name: 'enterType', value: '2', enableRtl: 'true', checked: true });
             radiobutton.appendTo('#enterType_random');
 
-            radiobutton.appendTo('#cr_bCachTrungDaThang_nhieuCap');
-            // Render initialized CheckBox.
-            var checkbox = new ej.buttons.CheckBox({ label: 'Hiện đá xiên' });
-            checkbox.appendTo('#cr_bcheckbox_show_daxien');
-            checkbox.change = function (args) {
-                var element = document.getElementById("cr_show_bDaxien");
-                if (args.checked) {
-                    element.style.display = "block";
-                } else {
-                    element.style.display = "none";
+            if (model.Id != 0) {
+                switch (model.EnterType) {
+                    case @((int)EnterTypeEnum.Buy):
+                        var radioButtonElement = document.querySelector('input[name="enterType"][value="0"]');
+                        if (radioButtonElement) {
+                            radioButtonElement.checked = true;
+                        }
+                        break;
+                    case @((int)EnterTypeEnum.Sell):
+                        var radioButtonElement = document.querySelector('input[name="enterType"][value="1"]');
+                        if (radioButtonElement) {
+                            radioButtonElement.checked = true;
+                        }
+                        break;
+                    case @((int)EnterTypeEnum.random):
+                        var radioButtonElement = document.querySelector('input[name="enterType"][value="2"]');
+                        if (radioButtonElement) {
+                            radioButtonElement.checked = true;
+                        }
+                        break;
                 }
-            };
+            } 
         });
 
         // Bắt sự kiện submit của biểu mẫu create

@@ -65,7 +65,10 @@
                         </div>
                         <div style="flex: 1;">
                             <div class="info-detail">
-                                <strong style="font-size:18px;">@string.Format(item.IdAccountFx + " " + item.Name)</strong>
+                                <span style="font-size:18px;">
+                                    <strong>@item.IdAccountFx</strong>
+                                    @(!string.IsNullOrEmpty(item.Name) ? string.Format("({0})", item.Name) : string.Empty) 
+                                </span>
                                 <span style="margin-top:5px;">@string.Format(strEnterType + " " + "(" + txtStatus + ")")</span>
                             </div>
                             <i id="@item.Id" onclick="deleteAccountFx(this)" class="icon-danger-delete fa fa-trash" aria-hidden="true"></i>
