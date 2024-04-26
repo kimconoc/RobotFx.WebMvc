@@ -26,6 +26,31 @@ namespace RobotFx.WebMvc.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+            var userData = _memCached.GetCurrentUser();
+            var controller = context.Controller as Controller;
+            if (controller != null && userData == null && !context.HttpContext.Request.Path.Equals("/Account/Login") && !context.HttpContext.Request.Path.Equals("/Account/ExecuteLogin"))
+            {
+                if (context.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    // Xử lý chuyển hướng Ajax bằng cách trả về một phản hồi JSON
+                    context.Result = new JsonResult(new { redirectTo = "/Account/Login" });
+                }
+                else
+                {
+                    // Xử lý chuyển hướng thông thường
+                    context.Result = new RedirectResult("/Account/Login");
+                }
+                return;
+            }
+
+            // Thực thi action
+            var resultContext = await next();
+            // Đoạn code sau khi action được thực thi
+        }
+
         protected DataResponse<TRequest> Success_Request<TRequest>(TRequest data)
         {
             return new DataResponse<TRequest>()

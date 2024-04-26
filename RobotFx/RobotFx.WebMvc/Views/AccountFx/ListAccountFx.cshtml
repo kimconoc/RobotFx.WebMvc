@@ -65,11 +65,11 @@
                         </div>
                         <div style="flex: 1;">
                             <div class="info-detail">
-                                <span style="font-size:18px;">
+                                <strong style="font-size:18px;">
                                     <strong>@item.IdAccountFx</strong>
-                                    @(!string.IsNullOrEmpty(item.Name) ? string.Format("({0})", item.Name) : string.Empty) 
-                                </span>
-                                <span style="margin-top:5px;">@string.Format(strEnterType + " " + "(" + txtStatus + ")")</span>
+                                    @(!string.IsNullOrEmpty(item.Name) ? string.Format(" – {0}", item.Name) : string.Empty)
+                                </strong>
+                                <span style="margin-top:5px;">@string.Format("(Tín hiệu: " + strEnterType + " – " + txtStatus + ")")</span>
                             </div>
                             <i id="@item.Id" onclick="deleteAccountFx(this)" class="icon-danger-delete fa fa-trash" aria-hidden="true"></i>
                             <i onclick="window.location.href='/AccountFx/ExecutionAccountFx?accountFxId=@item.Id';" class="icon-danger-info fa fa-pencil-square-o" aria-hidden="true"></i>

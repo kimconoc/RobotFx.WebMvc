@@ -95,15 +95,15 @@
                 <div class="div-row-input-val">
                     <div class="row row-input-val">
                         <span>
-                            Giá bắt đầu:
+                            Lot:
                         </span>
-                        <input type="number" step="any" tabindex="1" id="startingPrice" required value="@Model.StartingPrice">
+                        <input type="number" step="any" tabindex="1" id="startingPrice" required value="@Model.LotStart">
                     </div>
                 </div>
                 <div class="div-row-input-val">
                     <div class="row row-input-val">
                         <span>
-                            Giãn cách giá 0.01 đến 0.05:
+                            Giãn cách giá lệnh 1 đến 5:
                         </span>
                         <input type="number" step="any" tabindex="1" id="priceSpacing1To5" required value="@Model.PriceSpacing1To5">
                     </div>
@@ -111,26 +111,26 @@
                 <div class="div-row-input-val">
                     <div class="row row-input-val">
                         <span>
-                            Giãn cách giá 0.05 đến 0.13:
+                            Giãn cách giá từ lệnh 5:
                         </span>
-                        <input type="number" step="any" tabindex="1" id="priceSpacing5To13" required value="@Model.PriceSpacing5To13">
+                        <input type="number" step="any" tabindex="1" id="priceSpacing5To13" required value="@Model.PriceSpacingFrom5">
                     </div>
                 </div>
                 <div class="div-row-input-val">
                     <div class="row row-input-val">
                         <span>
-                            <span>Cách chơi:</span>
+                            <span>Tín hiệu:</span>
                         </span>
                         <div class="div-row-radio-cach-trung">
+                            <input type="radio" id="enterType_random">
                             <input type="radio" id="enterType_buy">
                             <input type="radio" id="enterType_sell">
-                            <input type="radio" id="enterType_random">
                         </div>
                     </div>
                 </div>
                 <div>
                     <div class="custom-div-row div-row-input-val div-row-span-title">
-                        <span>**Trạng Thái**</span>
+                        <span>**Start or Stop Robot**</span>
                     </div>
                     <div class="custom-div-row div-row-input-val div-row-input-val-radio">
                         <input type="radio" id="is_offline">
@@ -160,13 +160,13 @@
                 radiobutton.appendTo('#is_online');
             }
 
+            radiobutton = new ej.buttons.RadioButton({ label: 'Random', name: 'enterType', value: '2', enableRtl: 'true', checked: true });
+            radiobutton.appendTo('#enterType_random');
             radiobutton = new ej.buttons.RadioButton({ label: 'Buy', name: 'enterType', value: '0', enableRtl: 'true' });
             radiobutton.appendTo('#enterType_buy');
             radiobutton = new ej.buttons.RadioButton({ label: 'Sell', name: 'enterType', value: '1', enableRtl: 'true' });
             radiobutton.appendTo('#enterType_sell');
-            radiobutton = new ej.buttons.RadioButton({ label: 'Random', name: 'enterType', value: '2', enableRtl: 'true', checked: true });
-            radiobutton.appendTo('#enterType_random');
-
+           
             if (model.Id != 0) {
                 switch (model.EnterType) {
                     case @((int)EnterTypeEnum.Buy):
