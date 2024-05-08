@@ -8,9 +8,9 @@ namespace RobotFx.DoMain.Models.ModelsResponse
 {
     public class AccountFxResponse
     {
-        public string Id { get; set; }
+        public string AccountNumber { get; set; }
         public bool AutoTrading { get; set; }
-        public int SignalType { get; set; }
-        public int IsOnline { get; set; }
+        public bool SignalFlag { get; set; }
+        public int Signal { get; set; }
     }
 }

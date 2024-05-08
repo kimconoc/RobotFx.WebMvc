@@ -109,10 +109,10 @@ namespace RobotFx.WebMvc.Controllers
 
             AccountFxResponse accountFxResponse = new AccountFxResponse()
             {
-                Id = infoFx.IdAccountFx,
-                Autotrading = infoFx.SignalType == (int)SignalTypeEnum.random ? false : true,
-                SignalType = infoFx.SignalType,
-                IsOnline = infoFx.IsOnline,
+                AccountNumber = infoFx.IdAccountFx,
+                SignalFlag = infoFx.SignalType == (int)SignalTypeEnum.random ? false : true,
+                Signal = infoFx.SignalType == (int)SignalTypeEnum.random ? 0 : infoFx.SignalType,
+                AutoTrading = infoFx.IsOnline == (int)IsOnlineTypeEnum.Off ? false : true,
             };
 
             return Json(accountFxResponse);
