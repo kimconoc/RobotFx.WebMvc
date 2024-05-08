@@ -31,7 +31,7 @@ namespace RobotFx.WebMvc.Controllers
         {
             var userData = _memCached.GetCurrentUser();
             var controller = context.Controller as Controller;
-            if (controller != null && userData == null && !context.HttpContext.Request.Path.Equals("/Account/Login") && !context.HttpContext.Request.Path.Equals("/Account/ExecuteLogin"))
+            if (!context.HttpContext.Request.Path.Equals("/AccountFx/GetInfoById") && controller != null && userData == null && !context.HttpContext.Request.Path.Equals("/Account/Login") && !context.HttpContext.Request.Path.Equals("/Account/ExecuteLogin"))
             {
                 if (context.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                 {

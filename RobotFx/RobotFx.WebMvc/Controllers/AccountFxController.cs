@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using RobotFx.DoMain.Enum;
 using RobotFx.DoMain.FileLog;
 using RobotFx.DoMain.Models;
+using RobotFx.DoMain.Models.ModelsResponse;
 using RobotFx.Repositories.EntityFamework;
 using RobotFx.Repositories.EntityFamework.Interface;
 using RobotFx.WebMvc.MemCached.Interface;
@@ -92,6 +95,27 @@ namespace RobotFx.WebMvc.Controllers
             }
            
             return View(Server_Error());
+        }
+
+        [HttpGet]
+        public IActionResult GetInfoById(string id)
+        {
+            if(string.IsNullOrEmpty(id))
+                return Json(Bad_Request());
+
+            var infoFx = _accountFxRepositor.AsQueryable().Where(x => x.IdAccountFx == id && !x.IsDeleted).FirstOrDefault();
+            if(infoFx == null)
+                return Json(Not_Found());
+
+            AccountFxResponse accountFxResponse = new AccountFxResponse()
+            {
+                Id = infoFx.IdAccountFx,
+                Autotrading = infoFx.SignalType == (int)SignalTypeEnum.random ? false : true,
+                SignalType = infoFx.SignalType,
+                IsOnline = infoFx.IsOnline,
+            };
+
+            return Json(accountFxResponse);
         }
 
     }

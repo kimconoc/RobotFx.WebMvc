@@ -15,7 +15,7 @@ namespace RobotFx.DoMain.Models
         public double LotStart { get; set; }
         public int PriceSpacing1To5 { get; set; }
         public int PriceSpacingFrom5 { get; set; }
-        public int EnterType { get; set; }
+        public int SignalType { get; set; }
         public int IsOnline { get; set; }
     }
 }

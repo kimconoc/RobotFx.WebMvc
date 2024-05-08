@@ -33,17 +33,17 @@
             {
                 foreach (var item in Model)
                 {
-                    string strEnterType = string.Empty;
-                    switch (item.EnterType)
+                    string strSignalType = string.Empty;
+                    switch (item.SignalType)
                     {
-                        case (int)EnterTypeEnum.Buy:
-                            strEnterType = EnterTypeEnum.Buy.GetDescription();
+                        case (int)SignalTypeEnum.Buy:
+                            strSignalType = SignalTypeEnum.Buy.GetDescription();
                             break;
-                        case (int)EnterTypeEnum.Sell:
-                            strEnterType = EnterTypeEnum.Sell.GetDescription();
+                        case (int)SignalTypeEnum.Sell:
+                            strSignalType = SignalTypeEnum.Sell.GetDescription();
                             break;
                         default:
-                            strEnterType = EnterTypeEnum.random.GetDescription();
+                            strSignalType = SignalTypeEnum.random.GetDescription();
                             break;
                     }
                     string txtStatus = string.Empty;
@@ -69,7 +69,7 @@
                                     <strong>@item.IdAccountFx</strong>
                                     @(!string.IsNullOrEmpty(item.Name) ? string.Format(" – {0}", item.Name) : string.Empty)
                                 </strong>
-                                <span style="margin-top:5px;">@string.Format("(Tín hiệu: " + strEnterType + " – " + txtStatus + ")")</span>
+                                <span style="margin-top:5px;">@string.Format("(Tín hiệu: " + strSignalType + " – " + txtStatus + ")")</span>
                             </div>
                             <i id="@item.Id" onclick="deleteAccountFx(this)" class="icon-danger-delete fa fa-trash" aria-hidden="true"></i>
                             <i onclick="window.location.href='/AccountFx/ExecutionAccountFx?accountFxId=@item.Id';" class="icon-danger-info fa fa-pencil-square-o" aria-hidden="true"></i>

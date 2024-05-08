@@ -21,7 +21,7 @@ namespace RobotFx.DoMain.Enum
         UnknownDevice = 4,
 
     }
-    public enum EnterTypeEnum
+    public enum SignalTypeEnum
     {
         [Description("Buy")]
         Buy = 0,

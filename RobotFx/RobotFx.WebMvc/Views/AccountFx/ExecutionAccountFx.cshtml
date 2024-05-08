@@ -92,12 +92,12 @@
                         <input type="text" tabindex="1" id="name" value="@Model.Name">
                     </div>
                 </div>
-                <div class="div-row-input-val">
+               @*  <div class="div-row-input-val">
                     <div class="row row-input-val">
                         <span>
                             Lot:
                         </span>
-                        <input type="number" step="any" tabindex="1" id="startingPrice" required value="@Model.LotStart">
+                        <input type="number" step="any" tabindex="1" id="lotStart" required value="@Model.LotStart">
                     </div>
                 </div>
                 <div class="div-row-input-val">
@@ -113,18 +113,18 @@
                         <span>
                             Giãn cách giá từ lệnh 5:
                         </span>
-                        <input type="number" step="any" tabindex="1" id="priceSpacing5To13" required value="@Model.PriceSpacingFrom5">
+                        <input type="number" step="any" tabindex="1" id="priceSpacingFrom5" required value="@Model.PriceSpacingFrom5">
                     </div>
-                </div>
+                </div> *@
                 <div class="div-row-input-val">
                     <div class="row row-input-val">
                         <span>
                             <span>Tín hiệu:</span>
                         </span>
                         <div class="div-row-radio-cach-trung">
-                            <input type="radio" id="enterType_random">
-                            <input type="radio" id="enterType_buy">
-                            <input type="radio" id="enterType_sell">
+                            <input type="radio" id="signalType_random">
+                            <input type="radio" id="signalType_buy">
+                            <input type="radio" id="signalType_sell">
                         </div>
                     </div>
                 </div>
@@ -160,29 +160,29 @@
                 radiobutton.appendTo('#is_online');
             }
 
-            radiobutton = new ej.buttons.RadioButton({ label: 'Random', name: 'enterType', value: '2', enableRtl: 'true', checked: true });
-            radiobutton.appendTo('#enterType_random');
-            radiobutton = new ej.buttons.RadioButton({ label: 'Buy', name: 'enterType', value: '0', enableRtl: 'true' });
-            radiobutton.appendTo('#enterType_buy');
-            radiobutton = new ej.buttons.RadioButton({ label: 'Sell', name: 'enterType', value: '1', enableRtl: 'true' });
-            radiobutton.appendTo('#enterType_sell');
+            radiobutton = new ej.buttons.RadioButton({ label: 'Random', name: 'signalType', value: '2', enableRtl: 'true', checked: true });
+            radiobutton.appendTo('#signalType_random');
+            radiobutton = new ej.buttons.RadioButton({ label: 'Buy', name: 'signalType', value: '0', enableRtl: 'true' });
+            radiobutton.appendTo('#signalType_buy');
+            radiobutton = new ej.buttons.RadioButton({ label: 'Sell', name: 'signalType', value: '1', enableRtl: 'true' });
+            radiobutton.appendTo('#signalType_sell');
            
             if (model.Id != 0) {
-                switch (model.EnterType) {
-                    case @((int)EnterTypeEnum.Buy):
-                        var radioButtonElement = document.querySelector('input[name="enterType"][value="0"]');
+                switch (model.SignalType) {
+                    case @((int)SignalTypeEnum.Buy):
+                        var radioButtonElement = document.querySelector('input[name="signalType"][value="0"]');
                         if (radioButtonElement) {
                             radioButtonElement.checked = true;
                         }
                         break;
-                    case @((int)EnterTypeEnum.Sell):
-                        var radioButtonElement = document.querySelector('input[name="enterType"][value="1"]');
+                    case @((int)SignalTypeEnum.Sell):
+                        var radioButtonElement = document.querySelector('input[name="signalType"][value="1"]');
                         if (radioButtonElement) {
                             radioButtonElement.checked = true;
                         }
                         break;
-                    case @((int)EnterTypeEnum.random):
-                        var radioButtonElement = document.querySelector('input[name="enterType"][value="2"]');
+                    case @((int)SignalTypeEnum.random):
+                        var radioButtonElement = document.querySelector('input[name="signalType"][value="2"]');
                         if (radioButtonElement) {
                             radioButtonElement.checked = true;
                         }
@@ -196,16 +196,14 @@
             event.preventDefault(); // Ngăn chặn biểu mẫu gửi đi mặc định
 
             var selectedRadioonlineonoffline = document.querySelector('input[name="onlineonoffline"]:checked');
-            var selectedRadioenterType = document.querySelector('input[name="enterType"]:checked');
+            var selectedRadioSignalType = document.querySelector('input[name="signalType"]:checked');
 
             var accountFxModel = {
                 id: document.getElementById("id").value,
                 idAccountFx: document.getElementById("idAccountFx").value,
                 name: document.getElementById("name").value,
-                startingPrice: document.getElementById("startingPrice").value,
-                priceSpacing1To5: document.getElementById("priceSpacing1To5").value,
-                priceSpacing5To13: document.getElementById("priceSpacing5To13").value,
-                enterType: selectedRadioenterType.value,
+
+                signalType: selectedRadioSignalType.value,
                 isOnline: selectedRadioonlineonoffline.value,
                 isDeleted: false,
             }
